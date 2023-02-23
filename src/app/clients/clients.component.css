@@ -1,0 +1,74 @@
+.button {
+  padding: 5% 50px 5% 50px;
+  background-color: #FFDF00;
+  border-radius: 4%;
+  border-color: transparent;
+}
+
+.sub-header {
+  display: flex;
+  max-width: 100%;
+  width: 600px;
+  margin-bottom: 14%;
+}
+
+.header {
+  position: absolute;
+  left: 20;
+}
+
+.button-header {
+  position: absolute;
+  right: 4%;
+  margin-top: 30px;
+}
+
+.container {
+  display: grid;
+}
+
+table {
+    border-spacing: 1;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+}
+table * {
+    position: relative;
+}
+table td, table th {
+    padding-left: 8px;
+}
+table thead tr {
+    height: 60px;
+    background: #ffed86;
+    font-size: 16px;
+}
+table tbody tr {
+    height: 48px;
+    border-bottom: 1px solid #e3f1d5;
+}
+table tbody tr:last-child {
+    border: 0;
+}
+table td, table th {
+    text-align: left;
+}
+table td.l, table th.l {
+    text-align: right;
+}
+table td.c, table th.c {
+    text-align: center;
+}
+table td.r, table th.r {
+    text-align: center;
+}
+
+.input-search {
+  padding: 10px;
+}
