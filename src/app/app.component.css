@@ -25,10 +25,6 @@ p {
 }
 
 .toolbar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
   height: 60px;
   display: flex;
   align-items: center;
@@ -200,8 +196,7 @@ a:hover {
 }
 
 .sidebar {
-  position: absolute;
-  left: 0;
+  max-height: 100%;
   height: 100%;
   width: 200px;
   background-color: transparent;
@@ -324,4 +319,8 @@ footer a {
   position:absolute;
   width: max-content;
   top:10%;
+}
+
+.no-header{
+  display:inline-block;
 }
