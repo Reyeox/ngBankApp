@@ -5,40 +5,38 @@
         <h1 >Clientes</h1>
         <input class="input-search" type="text" placeholder="Buscar..." />
     </div>
-    
-    
+
+
     <div class="button-header">
-        <button class="button">Nuevo</button>
+        <button type="button" class="button">Nuevo</button>
     </div>
 </div>
 <div class="container" >
     <table class="table">
         <thead>
           <tr>
-            
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+
+            <th scope="col">Nombres</th>
+            <th scope="col">Dirección</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Contraseña</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Opciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+          <tr *ngFor="let item of myArray">
+            <td>{{item.name}}</td>
+            <td>{{item.address}}</td>
+            <td>{{item.phoneNumber}}</td>
+            <td>{{item.password}}</td>
+            <td>{{item.status}}</td>
+            <td>
+              <button style="margin-right: 5px" type="button" disabled><i class="fa fa-pencil" aria-hidden="true"></i></button>
+              <button type="button" disabled><i class="fa fa-trash" aria-hidden="true"></i></button>
+            </td>
           </tr>
-          <tr>
-           
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-          
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
+
         </tbody>
       </table>
 </div>

@@ -7,4 +7,16 @@ import { Component } from '@angular/core';
 })
 export class ClientsComponent {
 
+   myArray = [
+     {
+       "id": 1,
+       "name": "Matt",
+       "address": "Otavalo SN y Principal",
+       "phoneNumber": "098254785",
+       "password": "1234",
+       "status": true,
+     }
+   ];
+
+
 }

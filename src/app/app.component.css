@@ -55,12 +55,12 @@ p {
 
 .content {
   display: flex;
-  margin: 70px auto 32px;
+  margin: 50px 0px 0px 50px !important;
   padding: 0 16px;
-  max-width: 960px;
+  max-width: 100% !important;
   flex-direction: column;
   align-items: normal;
-  margin-left: 15%;
+  width: 100% !important;
 }
 
 svg.material-icons {
@@ -319,8 +319,11 @@ footer a {
   position:absolute;
   width: max-content;
   top:10%;
+  width: 150px;
 }
 
 .no-header{
-  display:inline-block;
+  display:flex;
+  height: 91.5% !important;
+  max-height: 100% !important;
 }

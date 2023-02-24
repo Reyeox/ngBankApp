@@ -25,6 +25,7 @@
 
 .container {
   display: grid;
+
 }
 
 table {
@@ -57,7 +58,7 @@ table tbody tr:last-child {
     border: 0;
 }
 table td, table th {
-    text-align: left;
+    text-align: center;
 }
 table td.l, table th.l {
     text-align: right;
