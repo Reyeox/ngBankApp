@@ -18,5 +18,19 @@ export class ClientsComponent {
      }
    ];
 
+   edition: boolean = false;
+   searchFilter: string = "";
+
+   editItem(): void{
+     if(this.edition){
+       this.edition = false;
+     }else{
+       this.edition = true;
+     }
+  }
+
+  deleteItem(): boolean{
+     return true;
+  }
 
 }
