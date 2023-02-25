@@ -24,7 +24,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of myArray | filter : searchFilter">
+          <tr *ngFor="let item of clientsList | filter : searchFilter">
             <td *ngIf="!edition">{{item.name}}</td>
             <td *ngIf="!edition">{{item.address}}</td>
             <td *ngIf="!edition">{{item.phoneNumber}}</td>
@@ -37,9 +37,9 @@
             <td *ngIf="edition"><input class="input-edit" type="text"  [(ngModel)]="item.password"  id="password"></td>
             <td *ngIf="edition"><input class="input-edit" type="checkbox"  [(ngModel)]="item.status"  id="status"></td>
             <td class="option-label">
-              <button class="btn btn-left btn-success" type="button" *ngIf="!edition" (click)="editItem()" ><i class="fa fa-pencil" aria-hidden="true"></i></button>
-              <button class="btn btn-left btn-danger" type="button" *ngIf="edition" (click)="editItem()" ><i class="fa fa-times-circle" aria-hidden="true"></i></button>
-              <button class="btn btn-left btn-confirm" *ngIf="edition" type="button" (click)="editItem()" ><i class="fa fa-check" aria-hidden="true"></i></button>
+              <button class="btn btn-left btn-success" type="button" *ngIf="!edition" (click)="editItem(item)" ><i class="fa fa-pencil" aria-hidden="true"></i></button>
+              <button class="btn btn-left btn-danger" type="button" *ngIf="edition" (click)="cancelEdit(item)" ><i class="fa fa-times-circle" aria-hidden="true"></i></button>
+              <button class="btn btn-left btn-confirm" *ngIf="edition" type="button" (click)="saveItem()" ><i class="fa fa-check" aria-hidden="true"></i></button>
               <button class="btn btn-right btn-danger" type="button" [disabled]="edition" (click)="deleteItem()"><i class="fa fa-trash" aria-hidden="true"></i></button>
             </td>
           </tr>
