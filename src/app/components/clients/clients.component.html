@@ -8,7 +8,7 @@
 
 
     <div class="button-header">
-        <button type="button"  class="button">Nuevo</button>
+        <button type="button" (click)="newItem()" class="button">Nuevo</button>
     </div>
 </div>
 <div class="container" >
@@ -24,12 +24,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of clientsList | filter : searchFilter">
+          <tr *ngFor="let item of clientsList | filter : searchFilter ; let i = index">
             <td *ngIf="!edition">{{item.name}}</td>
             <td *ngIf="!edition">{{item.address}}</td>
             <td *ngIf="!edition">{{item.phoneNumber}}</td>
             <td *ngIf="!edition">{{item.password}}</td>
-            <td *ngIf="!edition">{{item.status}}</td>
+            <td *ngIf="!edition"><input class="input-edit" disabled type="checkbox"  [(ngModel)]="item.status" ></td>
             <!-- Edition -->
             <td *ngIf="edition"><input class="input-edit" type="text"  [(ngModel)]="item.name"  id="name"></td>
             <td *ngIf="edition"><input class="input-edit" type="text"  [(ngModel)]="item.address"  id="address"></td>
@@ -40,10 +40,23 @@
               <button class="btn btn-left btn-success" type="button" *ngIf="!edition" (click)="editItem(item)" ><i class="fa fa-pencil" aria-hidden="true"></i></button>
               <button class="btn btn-left btn-danger" type="button" *ngIf="edition" (click)="cancelEdit(item)" ><i class="fa fa-times-circle" aria-hidden="true"></i></button>
               <button class="btn btn-left btn-confirm" *ngIf="edition" type="button" (click)="saveItem()" ><i class="fa fa-check" aria-hidden="true"></i></button>
-              <button class="btn btn-right btn-danger" type="button" [disabled]="edition" (click)="deleteItem()"><i class="fa fa-trash" aria-hidden="true"></i></button>
+              <button class="btn btn-left btn-danger" type="button" [disabled]="edition" (click)="deleteItem(i)"><i class="fa fa-trash" aria-hidden="true"></i></button>
             </td>
           </tr>
-
+          <tr *ngIf="creation">
+            <!--Creation-->
+            <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.name"  id="createName"></td>
+            <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.address"  id="createAddress"></td>
+            <td ><input class="input-edit" type="number"  [(ngModel)]="objectJson.phoneNumber"  id="createPhoneNumber"></td>
+            <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.password"  id="createPassword"></td>
+            <td ><input class="input-edit" type="checkbox"  [(ngModel)]="objectJson.status"  id="createStatus"></td>
+            <td class="option-label">
+<!--              <button class="btn btn-left btn-success" type="button" *ngIf="!edition" (click)="editItem(item)" ><i class="fa fa-pencil" aria-hidden="true"></i></button>-->
+<!--              <button class="btn btn-left btn-danger" type="button" *ngIf="edition" (click)="cancelEdit(item)" ><i class="fa fa-" aria-hidden="true"></i></button>-->
+              <button class="btn btn-left btn-danger" type="button"  (click)="cancelSave()"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
+              <button class="btn btn-left btn-confirm"  type="button" (click)="saveItem()" ><i class="fa fa-check" aria-hidden="true"></i></button>
+            </td>
+          </tr>
         </tbody>
       </table>
 </div>

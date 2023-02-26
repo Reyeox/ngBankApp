@@ -77,6 +77,10 @@
   background-color: white;
   color: rgba(198,23,23,0.8);
 }
+.btn-danger:disabled{
+  background-color: gray;
+  color:white;
+}
 .option-label{
   text-align: center;
 }
