@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 import { ClientsService } from "../../services/clients/clients.service";
-import { Client } from "../../models/client.model";
+import {Client} from "../../models/client.model";
+
 
 @Component({
   selector: 'app-clients',
@@ -13,16 +14,7 @@ export class ClientsComponent {
   constructor(private toastr: ToastrService, private clientService: ClientsService) {}
   objectJson: any;
   aux: any;
-   clientsList = [
-     {
-       "id": 1,
-       "name": "Matt",
-       "address": "Otavalo SN y Principal",
-       "phoneNumber": "098254785",
-       "password": "1234",
-       "status": true,
-     }
-   ];
+  clientsList: any[] = [];
 
 
   edition: boolean = false;
@@ -30,6 +22,20 @@ export class ClientsComponent {
   searchFilter: string = "";
 
   getData(): void{
+    this.clientsList.push({
+      "id": 1,
+      "name": "Matt",
+      "address": "Otavalo SN y Principal",
+      "phoneNumber": "098254785",
+      "password": "1234",
+      "status": true,
+    });
+        this.clientService.getClientes().subscribe((data: any[])=>{
+          data.forEach(el=>{
+            el.isEditing = false;
+          });
+          this.clientsList = data;
+        });
 
 
   }
@@ -57,6 +63,18 @@ export class ClientsComponent {
     return '';
   }
 
+  saveEdit(item:any): void{
+    this.clientService.updateCliente(item.id, item)
+      .subscribe((data: any) => {
+        console.log(data);
+        const index = this.clientsList.findIndex(c => c.id === item.id);
+        this.clientsList[index] = data;
+      });
+      //Save
+      this.showSuccess();
+      this.creation=false;
+  }
+
 
   newItem(): void{
     this.creation = true;
@@ -75,12 +93,14 @@ export class ClientsComponent {
 
 
 
-   editItem(itemToEdit: any): void{
+   editItem(item: any): void{
      if(this.edition){
        this.edition = false;
+       item.isEditing = false;
      }else{
-       this.aux = Object.assign({},itemToEdit);
+       this.aux = Object.assign({},item);
        this.edition = true;
+       item.isEditing = true;
      }
   }
 
@@ -92,15 +112,23 @@ export class ClientsComponent {
   cancelEdit(item: any): void{
     if(this.edition){
       this.clientsList.forEach(el=>{
-        el = {
-          "id": 0,
-          "name": this.aux.name,
-          "address":  this.aux.address,
-          "phoneNumber":  this.aux.phoneNumber,
-          "password":  this.aux.password,
-          "status": this.aux.status,
+        // el = {
+        //   "id": 0,
+        //   "name": this.aux.name,
+        //   "address":  this.aux.address,
+        //   "phoneNumber":  this.aux.phoneNumber,
+        //   "password":  this.aux.password,
+        //   "status": this.aux.status,
+        // } Some Bug Founded with the Assign Backup Info
+        if(el.id===item.id){
+          el.name = this.aux.name;
+          el.address = this.aux.address;
+          el.phoneNumber = this.aux.phoneNumber;
+          el.password = this.aux.password;
+          el.status = this.aux.status;
         }
       });
+      item.isEditing = false;
       this.edition = false;
       this.aux = {};
     }else{
@@ -108,13 +136,17 @@ export class ClientsComponent {
     }
   }
 
-  deleteItem(index: any): boolean{
-    this.clientsList.splice(index,1);
-     this.showError();
-     return true;
+  deleteItem(index: any): void{
+    this.clientService.deleteCliente(index)
+      .subscribe((data: any) => {
+        const index = this.clientsList.findIndex(c => c.id === index);
+        this.clientsList.splice(index, 1);
+        this.showError();
+      });
   }
 
   ngOnInit(){
+    this.getData();
     this.objectJson = {
       "id": 0,
       "name": "",

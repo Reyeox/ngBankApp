@@ -2,7 +2,7 @@ export interface Client {
   "id": Number,
   "name": String,
   "address": String,
-  "phoneNumber": Number,
+  "phoneNumber": String,
   "password": String,
   "status": Boolean,
 };

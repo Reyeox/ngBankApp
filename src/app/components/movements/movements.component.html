@@ -1,21 +1,19 @@
 
-
 <div class="sub-header">
   <div class="header">
-    <h1>Movimientos</h1>
-    <input class="input-search" type="text" placeholder="Buscar..." />
+    <h1 class="title">Movimientos</h1>
+    <input class="input-search" [(ngModel)]="searchFilter" type="text" placeholder="Buscar..." />
   </div>
 
 
   <div class="button-header">
-    <button type="button" class="button">Nuevo</button>
+    <button type="button" (click)="newItem()" class="button">Nuevo</button>
   </div>
 </div>
 <div class="container" >
   <table class="table">
     <thead>
     <tr>
-
       <th scope="col">Número Cuenta</th>
       <th scope="col">Tipo</th>
       <th scope="col">Saldo Inicial</th>
@@ -25,13 +23,34 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
+    <tr *ngFor="let item of movementsList | filter : searchFilter ; let i = index">
+      <td>{{!item.isEditing?item.name:''}}<input class="input-edit" type="text"  *ngIf="item.isEditing" [(ngModel)]="item.name"  id="name"></td>
+      <td>{{!item.isEditing?item.address:''}} <input class="input-edit" type="text" *ngIf="item.isEditing"  [(ngModel)]="item.address"  id="address"></td>
+      <td>{{!item.isEditing?item.phoneNumber:''}} <input class="input-edit" type="text" *ngIf="item.isEditing" [(ngModel)]="item.phoneNumber"  id="phoneNumber"></td>
+      <td>{{!item.isEditing?item.password:''}}<input class="input-edit" type="text"  *ngIf="item.isEditing" [(ngModel)]="item.password"  id="password"></td>
+      <td><input class="input-edit" disabled type="checkbox"  *ngIf="!item.isEditing" [(ngModel)]="item.status" ><input class="input-edit" type="checkbox" *ngIf="item.isEditing" [(ngModel)]="item.status"  id="status"></td>
+      <td class="option-label">
+        <button class="btn btn-left btn-success" type="button" *ngIf="!item.isEditing" (click)="editItem(item)" ><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button class="btn btn-left btn-danger" type="button" *ngIf="item.isEditing" (click)="cancelEdit(item)" ><i class="fa fa-times-circle" aria-hidden="true"></i></button>
+        <button class="btn btn-left btn-confirm" *ngIf="item.isEditing" type="button" (click)="saveEdit(item)" ><i class="fa fa-check" aria-hidden="true"></i></button>
+        <button class="btn btn-left btn-danger" type="button" [disabled]="item.isEditing" (click)="deleteItem(i)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+      </td>
     </tr>
-
+    <tr *ngIf="creation">
+      <!--Creation-->
+      <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.name"  id="createName"></td>
+      <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.address"  id="createAddress"></td>
+      <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.phoneNumber"  id="createPhoneNumber"></td>
+      <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.password"  id="createPassword"></td>
+      <td ><input class="input-edit" type="checkbox"  [(ngModel)]="objectJson.status"  id="createStatus"></td>
+      <td class="option-label">
+        <!--              <button class="btn btn-left btn-success" type="button" *ngIf="!edition" (click)="editItem(item)" ><i class="fa fa-pencil" aria-hidden="true"></i></button>-->
+        <!--              <button class="btn btn-left btn-danger" type="button" *ngIf="edition" (click)="cancelEdit(item)" ><i class="fa fa-" aria-hidden="true"></i></button>-->
+        <button class="btn btn-left btn-danger" type="button"  (click)="cancelSave()"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
+        <button class="btn btn-left btn-confirm"  type="button" (click)="saveItem()" ><i class="fa fa-check" aria-hidden="true"></i></button>
+      </td>
+    </tr>
     </tbody>
   </table>
 </div>
+

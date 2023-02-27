@@ -25,29 +25,23 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of clientsList | filter : searchFilter ; let i = index">
-            <td *ngIf="!edition">{{item.name}}</td>
-            <td *ngIf="!edition">{{item.address}}</td>
-            <td *ngIf="!edition">{{item.phoneNumber}}</td>
-            <td *ngIf="!edition">{{item.password}}</td>
-            <td *ngIf="!edition"><input class="input-edit" disabled type="checkbox"  [(ngModel)]="item.status" ></td>
-            <!-- Edition -->
-            <td *ngIf="edition"><input class="input-edit" type="text"  [(ngModel)]="item.name"  id="name"></td>
-            <td *ngIf="edition"><input class="input-edit" type="text"  [(ngModel)]="item.address"  id="address"></td>
-            <td *ngIf="edition"><input class="input-edit" type="number"  [(ngModel)]="item.phoneNumber"  id="phoneNumber"></td>
-            <td *ngIf="edition"><input class="input-edit" type="text"  [(ngModel)]="item.password"  id="password"></td>
-            <td *ngIf="edition"><input class="input-edit" type="checkbox"  [(ngModel)]="item.status"  id="status"></td>
+            <td>{{!item.isEditing?item.name:''}}<input class="input-edit" type="text"  *ngIf="item.isEditing" [(ngModel)]="item.name"  id="name"></td>
+            <td>{{!item.isEditing?item.address:''}} <input class="input-edit" type="text" *ngIf="item.isEditing"  [(ngModel)]="item.address"  id="address"></td>
+            <td>{{!item.isEditing?item.phoneNumber:''}} <input class="input-edit" type="text" *ngIf="item.isEditing" [(ngModel)]="item.phoneNumber"  id="phoneNumber"></td>
+            <td>{{!item.isEditing?item.password:''}}<input class="input-edit" type="text"  *ngIf="item.isEditing" [(ngModel)]="item.password"  id="password"></td>
+            <td><input class="input-edit" disabled type="checkbox"  *ngIf="!item.isEditing" [(ngModel)]="item.status" ><input class="input-edit" type="checkbox" *ngIf="item.isEditing" [(ngModel)]="item.status"  id="status"></td>
             <td class="option-label">
-              <button class="btn btn-left btn-success" type="button" *ngIf="!edition" (click)="editItem(item)" ><i class="fa fa-pencil" aria-hidden="true"></i></button>
-              <button class="btn btn-left btn-danger" type="button" *ngIf="edition" (click)="cancelEdit(item)" ><i class="fa fa-times-circle" aria-hidden="true"></i></button>
-              <button class="btn btn-left btn-confirm" *ngIf="edition" type="button" (click)="saveItem()" ><i class="fa fa-check" aria-hidden="true"></i></button>
-              <button class="btn btn-left btn-danger" type="button" [disabled]="edition" (click)="deleteItem(i)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+              <button class="btn btn-left btn-success" type="button" *ngIf="!item.isEditing" (click)="editItem(item)" ><i class="fa fa-pencil" aria-hidden="true"></i></button>
+              <button class="btn btn-left btn-danger" type="button" *ngIf="item.isEditing" (click)="cancelEdit(item)" ><i class="fa fa-times-circle" aria-hidden="true"></i></button>
+              <button class="btn btn-left btn-confirm" *ngIf="item.isEditing" type="button" (click)="saveEdit(item)" ><i class="fa fa-check" aria-hidden="true"></i></button>
+              <button class="btn btn-left btn-danger" type="button" [disabled]="item.isEditing" (click)="deleteItem(i)"><i class="fa fa-trash" aria-hidden="true"></i></button>
             </td>
           </tr>
           <tr *ngIf="creation">
             <!--Creation-->
             <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.name"  id="createName"></td>
             <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.address"  id="createAddress"></td>
-            <td ><input class="input-edit" type="number"  [(ngModel)]="objectJson.phoneNumber"  id="createPhoneNumber"></td>
+            <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.phoneNumber"  id="createPhoneNumber"></td>
             <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.password"  id="createPassword"></td>
             <td ><input class="input-edit" type="checkbox"  [(ngModel)]="objectJson.status"  id="createStatus"></td>
             <td class="option-label">
