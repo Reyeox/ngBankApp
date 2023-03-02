@@ -1,32 +1,93 @@
+/* EHernandez  - 25/02 */
+/* Header Styles */
 .button {
-  padding: 5% 50px 5% 50px;
+  padding: 5% 80px 5% 80px;
   background-color: #FFDF00;
   border-radius: 4%;
   border-color: transparent;
+  font-weight: 600;
+  font-size:initial;
+  color:#10255e;
 }
-
+.title{
+  color:#10255e;
+}
+.header {
+  position: absolute;
+  left: 20;
+}
 .sub-header {
   display: flex;
   max-width: 100%;
   width: 600px;
   margin-bottom: 14%;
 }
-
-.header {
-  position: absolute;
-  left: 20;
-}
-
 .button-header {
   position: absolute;
   right: 4%;
   margin-top: 30px;
 }
-
-.container {
-  display: grid;
+.button:active{
+  background-color: white !important;
+  border: 1px solid #FFDF00;
 
 }
+.input-search {
+  padding: 10px;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 4%;
+}
+.input-edit {
+  padding: 4px;
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 4%;
+}
+
+/* Container Styles */
+.container {
+  display: grid;
+}
+.btn{
+  color:white;
+  border-radius: 20px;
+  border-color:transparent;
+}
+.btn-left{
+  margin-right: 5px;
+}
+.btn-success{
+  background-color: rgba(21,88,189,0.8);
+}
+
+.btn-confirm{
+  background-color: rgba(70,213,80,0.8);
+}
+.btn-confirm:active{
+  color: rgba(70,213,80,0.8);
+  background-color: white;
+}
+.btn-success:active{
+  background-color: white;
+  color:rgba(21,88,189,0.8);
+}
+.btn-danger{
+  background-color: rgba(198,23,23,0.8);
+}
+.btn-danger:active{
+  background-color: white;
+  color: rgba(198,23,23,0.8);
+}
+.btn-danger:disabled{
+  background-color: gray;
+  color:white;
+}
+.option-label{
+  text-align: center;
+}
+
+
+
+/* Table Styles */
 
 table {
   border-spacing: 1;
@@ -34,7 +95,6 @@ table {
   background: white;
   border-radius: 6px;
   overflow: hidden;
-  max-width: 800px;
   width: 100%;
   margin: 0 auto;
   position: relative;
@@ -44,10 +104,11 @@ table * {
 }
 table td, table th {
   padding-left: 8px;
+  color:#10255e;
 }
 table thead tr {
   height: 60px;
-  background: #ffed86;
+  background: #FFDF00;
   font-size: 16px;
 }
 table tbody tr {
@@ -58,7 +119,7 @@ table tbody tr:last-child {
   border: 0;
 }
 table td, table th {
-  text-align: left;
+  text-align: center;
 }
 table td.l, table th.l {
   text-align: right;
@@ -70,6 +131,4 @@ table td.r, table th.r {
   text-align: center;
 }
 
-.input-search {
-  padding: 10px;
-}
+

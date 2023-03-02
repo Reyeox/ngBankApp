@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ToastrService } from "ngx-toastr";
 import { ClientsService } from "../../services/clients/clients.service";
-import {Client} from "../../models/client.model";
+
 
 
 @Component({
@@ -22,22 +22,16 @@ export class ClientsComponent {
   searchFilter: string = "";
 
   getData(): void{
-    this.clientsList.push({
-      "id": 1,
-      "name": "Matt",
-      "address": "Otavalo SN y Principal",
-      "phoneNumber": "098254785",
-      "password": "1234",
-      "status": true,
-    });
         this.clientService.getClientes().subscribe((data: any[])=>{
-          data.forEach(el=>{
-            el.isEditing = false;
-          });
-          this.clientsList = data;
+          if(data!==null){
+            data.forEach(el=>{
+              el.isEditing = false;
+            });
+            this.clientsList = data;
+          }else{
+            this.toastr.error('No hay información de clientes...');
+          }
         });
-
-
   }
 
   showSuccess(): void{
@@ -50,29 +44,33 @@ export class ClientsComponent {
 
 
   saveItem(): String{
-    if(!this.objectJson.name||!this.objectJson.address||!this.objectJson.phoneNumber||!this.objectJson.password){
+    if(!this.objectJson.nombre||!this.objectJson.direccion||!this.objectJson.telefono||!this.objectJson.contrasena){
       this.toastr.warning('Debes diligeniciar todos los datos del cliente.','Aviso');
     }else{
       //Save
-      this.clientsList.push(this.objectJson);
-      this.showSuccess();
-      this.objectJson={};
+      this.objectJson.id = this.clientsList.length+1;
+      this.clientService.create(this.objectJson)
+      .subscribe(data =>{
+        this.getData();
+        this.showSuccess();
+        this.objectJson={};
       this.creation=false;
+      });
+      
     }
 
     return '';
   }
 
   saveEdit(item:any): void{
-    this.clientService.updateCliente(item.id, item)
+    this.clientService.modify(item.clienteId, item)
       .subscribe((data: any) => {
-        console.log(data);
-        const index = this.clientsList.findIndex(c => c.id === item.id);
-        this.clientsList[index] = data;
+        this.showSuccess();
+        this.getData();
+        this.edition = false;
       });
       //Save
-      this.showSuccess();
-      this.creation=false;
+      
   }
 
 
@@ -121,11 +119,11 @@ export class ClientsComponent {
         //   "status": this.aux.status,
         // } Some Bug Founded with the Assign Backup Info
         if(el.id===item.id){
-          el.name = this.aux.name;
-          el.address = this.aux.address;
-          el.phoneNumber = this.aux.phoneNumber;
-          el.password = this.aux.password;
-          el.status = this.aux.status;
+          el.name = this.aux.nombre;
+          el.address = this.aux.direccion;
+          el.phoneNumber = this.aux.telefono;
+          el.password = this.aux.contrasena;
+          el.status = this.aux.estado;
         }
       });
       item.isEditing = false;
@@ -137,10 +135,9 @@ export class ClientsComponent {
   }
 
   deleteItem(index: any): void{
-    this.clientService.deleteCliente(index)
+    this.clientService.delete(index)
       .subscribe((data: any) => {
-        const index = this.clientsList.findIndex(c => c.id === index);
-        this.clientsList.splice(index, 1);
+        this.getData();
         this.showError();
       });
   }
@@ -148,12 +145,12 @@ export class ClientsComponent {
   ngOnInit(){
     this.getData();
     this.objectJson = {
-      "id": 0,
-      "name": "",
-      "address": "",
-      "phoneNumber": "",
-      "password": "",
-      "status": false,
+      "clientId": 0,
+      "nombre": "",
+      "direccion": "",
+      "telefono": "",
+      "contrasena": "",
+      "estado": false,
     }
   }
 

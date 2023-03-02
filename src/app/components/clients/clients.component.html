@@ -25,25 +25,25 @@
         </thead>
         <tbody>
           <tr *ngFor="let item of clientsList | filter : searchFilter ; let i = index">
-            <td>{{!item.isEditing?item.name:''}}<input class="input-edit" type="text"  *ngIf="item.isEditing" [(ngModel)]="item.name"  id="name"></td>
-            <td>{{!item.isEditing?item.address:''}} <input class="input-edit" type="text" *ngIf="item.isEditing"  [(ngModel)]="item.address"  id="address"></td>
-            <td>{{!item.isEditing?item.phoneNumber:''}} <input class="input-edit" type="text" *ngIf="item.isEditing" [(ngModel)]="item.phoneNumber"  id="phoneNumber"></td>
-            <td>{{!item.isEditing?item.password:''}}<input class="input-edit" type="text"  *ngIf="item.isEditing" [(ngModel)]="item.password"  id="password"></td>
-            <td><input class="input-edit" disabled type="checkbox"  *ngIf="!item.isEditing" [(ngModel)]="item.status" ><input class="input-edit" type="checkbox" *ngIf="item.isEditing" [(ngModel)]="item.status"  id="status"></td>
+            <td>{{!item.isEditing?item.nombre:''}}<input class="input-edit" type="text"  *ngIf="item.isEditing" [(ngModel)]="item.nombre"  id="name"></td>
+            <td>{{!item.isEditing?item.direccion:''}} <input class="input-edit" type="text" *ngIf="item.isEditing"  [(ngModel)]="item.direccion"  id="address"></td>
+            <td>{{!item.isEditing?item.telefono:''}} <input class="input-edit" type="text" *ngIf="item.isEditing" [(ngModel)]="item.telefono"  id="phoneNumber"></td>
+            <td>{{!item.isEditing?item.contrasena:''}}<input class="input-edit" type="text"  *ngIf="item.isEditing" [(ngModel)]="item.contrasena"  id="password"></td>
+            <td><input class="input-edit" disabled type="checkbox"  *ngIf="!item.isEditing" [(ngModel)]="item.estado" ><input class="input-edit" type="checkbox" *ngIf="item.isEditing" [(ngModel)]="item.estado"  id="status"></td>
             <td class="option-label">
               <button class="btn btn-left btn-success" type="button" *ngIf="!item.isEditing" (click)="editItem(item)" ><i class="fa fa-pencil" aria-hidden="true"></i></button>
               <button class="btn btn-left btn-danger" type="button" *ngIf="item.isEditing" (click)="cancelEdit(item)" ><i class="fa fa-times-circle" aria-hidden="true"></i></button>
               <button class="btn btn-left btn-confirm" *ngIf="item.isEditing" type="button" (click)="saveEdit(item)" ><i class="fa fa-check" aria-hidden="true"></i></button>
-              <button class="btn btn-left btn-danger" type="button" [disabled]="item.isEditing" (click)="deleteItem(i)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+              <button class="btn btn-left btn-danger" type="button" [disabled]="item.isEditing" (click)="deleteItem(item.clienteId)"><i class="fa fa-trash" aria-hidden="true"></i></button>
             </td>
           </tr>
           <tr *ngIf="creation">
             <!--Creation-->
-            <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.name"  id="createName"></td>
-            <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.address"  id="createAddress"></td>
-            <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.phoneNumber"  id="createPhoneNumber"></td>
-            <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.password"  id="createPassword"></td>
-            <td ><input class="input-edit" type="checkbox"  [(ngModel)]="objectJson.status"  id="createStatus"></td>
+            <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.nombre"  id="createName"></td>
+            <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.direccion"  id="createAddress"></td>
+            <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.telefono"  id="createPhoneNumber"></td>
+            <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.contrasena"  id="createPassword"></td>
+            <td ><input class="input-edit" type="checkbox"  [(ngModel)]="objectJson.estado"  id="createStatus"></td>
             <td class="option-label">
 <!--              <button class="btn btn-left btn-success" type="button" *ngIf="!edition" (click)="editItem(item)" ><i class="fa fa-pencil" aria-hidden="true"></i></button>-->
 <!--              <button class="btn btn-left btn-danger" type="button" *ngIf="edition" (click)="cancelEdit(item)" ><i class="fa fa-" aria-hidden="true"></i></button>-->

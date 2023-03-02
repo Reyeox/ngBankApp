@@ -6,57 +6,31 @@ import {Observable} from "rxjs";
   providedIn: 'root'
 })
 export class ClientsService {
-
-  clientListMock: any = [{
-    "id": 1,
-    "name": "Matt",
-    "address": "Otavalo SN y Principal",
-    "phoneNumber": "098254785",
-    "password": "1234",
-    "status": true,
-  },
-    {
-      "id": 2,
-      "name": "Matt",
-      "address": "Otavalo SN y Principal",
-      "phoneNumber": "098254785",
-      "password": "1234",
-      "status": true,
-    },
-    {
-      "id": 3,
-      "name": "Matt",
-      "address": "Otavalo SN y Principal",
-      "phoneNumber": "098254785",
-      "password": "1234",
-      "status": true,
-    }];
+  private apiUrl = 'http://localhost:8081/';
+  
   constructor(private http: HttpClient) { }
-  private apiUrl = 'https://localhost:8080/clientes';
+
+
   getClientes(): Observable<any> {
-    if(true){
-      return this.clientListMock;
-    }else{
-      return this.http.get(this.apiUrl);
-    }
+      return this.http.get(this.apiUrl + 'clientes/');
   }
 
-  getCliente(id: number): Observable<any> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.get(url);
+  // getCliente(id: number): Observable<any> {
+  //   const url = `${this.apiUrl}/${id}`;
+  //   return this.http.get(url);
+  // }
+
+  create(cliente: any): Observable<any> {
+    return this.http.post(this.apiUrl + 'clientes/create', cliente);
   }
 
-  addCliente(cliente: any): Observable<any> {
-    return this.http.post(this.apiUrl, cliente);
+  modify(id: number, cliente: any): Observable<any> {
+    const url = `${this.apiUrl}clientes/modify?id=${id}`;
+    return this.http.post(url, cliente);
   }
 
-  updateCliente(id: number, cliente: any): Observable<any> {
-    const url = `${this.apiUrl}/${id}`;
-    return this.http.put(url, cliente);
-  }
-
-  deleteCliente(id: number): Observable<any> {
-    const url = `${this.apiUrl}/${id}`;
+  delete(id: number): Observable<any> {
+    const url = `${this.apiUrl}clientes/delete?id=${id}`;
     return this.http.delete(url);
   }
 }

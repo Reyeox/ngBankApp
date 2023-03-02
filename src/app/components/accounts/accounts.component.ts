@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import {ToastrService} from "ngx-toastr";
-import {ClientsService} from "../../services/clients/clients.service";
+import { AccountsService } from 'src/app/services/accounts/accounts.service';
+import { ClientsService } from 'src/app/services/clients/clients.service';
+
 
 @Component({
   selector: 'app-accounts',
@@ -8,149 +10,166 @@ import {ClientsService} from "../../services/clients/clients.service";
   styleUrls: ['./accounts.component.css']
 })
 export class AccountsComponent {
-  constructor(private toastr: ToastrService, private clientService: ClientsService) {}
+  constructor(private toastr: ToastrService, private accountService: AccountsService, private clientService: ClientsService) {}
   objectJson: any;
   aux: any;
-  clientsList: any[] = [];
+  accountsList: any[] = [];
+  clientList: any[] = [];
 
 
   edition: boolean = false;
   creation: boolean = false;
   searchFilter: string = "";
 
+  getDataClients(): void{
+    this.clientService.getClientes().subscribe((data: any[]) =>{
+      if(data!==null){
+        this.clientList = data;
+        this.getData();
+      }
+    })
+  };
+
   getData(): void{
-    this.clientsList.push({
-      "id": 1,
-      "name": "Matt",
-      "address": "Otavalo SN y Principal",
-      "phoneNumber": "098254785",
-      "password": "1234",
-      "status": true,
+    this.accountService.getAccounts().subscribe((data: any[])=>{
+      if(data!==null){
+        data.forEach(el=>{
+          el.isEditing = false;
+          this.clientList.forEach(element => {
+            if(element.clienteId == el.clientId){
+              el.clientName = element.nombre;
+            }
+          });
+        });
+        this.accountsList = data;
+      }else{
+        this.toastr.error('No hay cuentas registradas...');
+      }
     });
-    this.clientService.getClientes().subscribe((data: any[])=>{
-      data.forEach(el=>{
-        el.isEditing = false;
-      });
-      this.clientsList = data;
-    });
+}
+
+showSuccess(): void{
+this.toastr.success('Guardado correctamente','Guardar');
+}
+
+showError(): void{
+this.toastr.error('Se ha eliminado el registro correctamente.','Eliminación');
+}
 
 
-  }
-
-  showSuccess(): void{
-    this.toastr.success('Guardado correctamente','Guardar');
-  }
-
-  showError(): void{
-    this.toastr.error('Se ha eliminado el registro correctamente.','Eliminación');
-  }
-
-
-  saveItem(): String{
-    if(!this.objectJson.name||!this.objectJson.address||!this.objectJson.phoneNumber||!this.objectJson.password){
-      this.toastr.warning('Debes diligeniciar todos los datos del cliente.','Aviso');
-    }else{
-      //Save
-      this.clientsList.push(this.objectJson);
-      this.showSuccess();
-      this.objectJson={};
-      this.creation=false;
-    }
-
-    return '';
-  }
-
-  saveEdit(item:any): void{
-    this.clientService.updateCliente(item.id, item)
-      .subscribe((data: any) => {
-        console.log(data);
-        const index = this.clientsList.findIndex(c => c.id === item.id);
-        this.clientsList[index] = data;
-      });
-    //Save
-    this.showSuccess();
-    this.creation=false;
-  }
-
-
-  newItem(): void{
-    this.creation = true;
-    // let newItem = {
-    //   "id": 0,
-    //   "name": this.objectJson.name,
-    //   "address": this.objectJson.address,
-    //   "phoneNumber": this.objectJson.phoneNumber,
-    //   "password": this.objectJson.password,
-    //   "status": this.objectJson.status,
-    // }
-    // this.clientsList.push(newItem);
-  }
-
-
-
-
-
-  editItem(item: any): void{
-    if(this.edition){
-      this.edition = false;
-      item.isEditing = false;
-    }else{
-      this.aux = Object.assign({},item);
-      this.edition = true;
-      item.isEditing = true;
-    }
-  }
-
-  cancelSave(): void{
-    this.creation = false;
-    this.objectJson = {};
-  }
-
-  cancelEdit(item: any): void{
-    if(this.edition){
-      this.clientsList.forEach(el=>{
-        // el = {
-        //   "id": 0,
-        //   "name": this.aux.name,
-        //   "address":  this.aux.address,
-        //   "phoneNumber":  this.aux.phoneNumber,
-        //   "password":  this.aux.password,
-        //   "status": this.aux.status,
-        // } Some Bug Founded with the Assign Backup Info
-        if(el.id===item.id){
-          el.name = this.aux.name;
-          el.address = this.aux.address;
-          el.phoneNumber = this.aux.phoneNumber;
-          el.password = this.aux.password;
-          el.status = this.aux.status;
-        }
-      });
-      item.isEditing = false;
-      this.edition = false;
-      this.aux = {};
-    }else{
-      this.edition = true;
-    }
-  }
-
-  deleteItem(index: any): void{
-    this.clientService.deleteCliente(index)
-      .subscribe((data: any) => {
-        const index = this.clientsList.findIndex(c => c.id === index);
-        this.clientsList.splice(index, 1);
-        this.showError();
-      });
-  }
-
-  ngOnInit(){
+saveItem(): void{
+if(!this.objectJson.numeroCuenta||!this.objectJson.tipoCuenta||!this.objectJson.estado||!this.objectJson.clientId){
+  this.toastr.warning('Debes diligeniciar todos los datos del cliente.','Aviso');
+}else{
+  //Save
+  this.objectJson.id = this.accountsList.length+1;
+  this.accountService.create(this.objectJson)
+  .subscribe(data =>{
     this.getData();
-    this.objectJson = {
-      "id": 0,
-      "name": "",
-      "address": "",
-      "phoneNumber": "",
-      "password": "",
-      "status": false,
+    this.showSuccess();
+    this.objectJson={};
+  this.creation=false;
+  });
+  
+}
+
+}
+
+saveEdit(item:any): void{
+this.accountService.modify(item.numeroCuenta, item)
+  .subscribe((data: any) => {
+    this.showSuccess();
+    this.getData();
+    this.edition = false;
+  });
+  //Save
+  
+}
+
+
+newItem(): void{
+this.creation = true;
+// let newItem = {
+//   "id": 0,
+//   "name": this.objectJson.name,
+//   "address": this.objectJson.address,
+//   "phoneNumber": this.objectJson.phoneNumber,
+//   "password": this.objectJson.password,
+//   "status": this.objectJson.status,
+// }
+// this.accountsList.push(newItem);
+}
+
+
+
+
+
+editItem(item: any): void{
+ if(this.edition){
+   this.edition = false;
+   item.isEditing = false;
+ }else{
+  //  this.aux = Object.assign({},item);
+   this.aux = {
+    "numeroCuenta": item.numeroCuenta,
+    "saldoInicial": item.saldoInicial,
+    "tipoCuenta": item.tipoCuenta,
+    "estado": item.estado,
+    "clientId": item.clientId,
+   }
+   this.edition = true;
+   item.isEditing = true;
+ }
+}
+
+cancelSave(): void{
+this.creation = false;
+this.objectJson = {};
+}
+
+cancelEdit(item: any): void{
+if(this.edition){
+  this.accountsList.forEach(el=>{
+    // el = {
+    //   "id": 0,
+    //   "name": this.aux.name,
+    //   "address":  this.aux.address,
+    //   "phoneNumber":  this.aux.phoneNumber,
+    //   "password":  this.aux.password,
+    //   "status": this.aux.status,
+    // } Some Bug Founded with the Assign Backup Info
+    if(el.numeroCuenta===item.numeroCuenta){
+      el.numeroCuenta = this.aux.numeroCuenta;
+      el.tipoCuenta = this.aux.tipoCuenta;
+      el.clientId = this.aux.clienteId;
+      el.saldoInicial = this.aux.saldoInicial;
+      el.estado = this.aux.estado;
     }
-  }
+  });
+  item.isEditing = false;
+  this.edition = false;
+  this.aux = {};
+}else{
+  this.edition = true;
+}
+}
+
+deleteItem(index: any): void{
+this.accountService.delete(index)
+  .subscribe((data: any) => {
+    this.getData();
+    this.showError();
+  });
+}
+
+ngOnInit(){
+this.getDataClients();
+this.objectJson = {
+  "clientId": 0,
+  "numeroCuenta": "",
+  "tipoCuenta": "",
+  "saldoInicial": "",
+  "estado": false,
+}
+}
 }

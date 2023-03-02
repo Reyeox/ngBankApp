@@ -19,16 +19,18 @@
       <th scope="col">Saldo Inicial</th>
       <th scope="col">Estado</th>
       <th scope="col">Movimiento</th>
+      <th scope="col">Saldo Disponible</th>
       <th scope="col">Opciones</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let item of movementsList | filter : searchFilter ; let i = index">
-      <td>{{!item.isEditing?item.name:''}}<input class="input-edit" type="text"  *ngIf="item.isEditing" [(ngModel)]="item.name"  id="name"></td>
-      <td>{{!item.isEditing?item.address:''}} <input class="input-edit" type="text" *ngIf="item.isEditing"  [(ngModel)]="item.address"  id="address"></td>
-      <td>{{!item.isEditing?item.phoneNumber:''}} <input class="input-edit" type="text" *ngIf="item.isEditing" [(ngModel)]="item.phoneNumber"  id="phoneNumber"></td>
-      <td>{{!item.isEditing?item.password:''}}<input class="input-edit" type="text"  *ngIf="item.isEditing" [(ngModel)]="item.password"  id="password"></td>
-      <td><input class="input-edit" disabled type="checkbox"  *ngIf="!item.isEditing" [(ngModel)]="item.status" ><input class="input-edit" type="checkbox" *ngIf="item.isEditing" [(ngModel)]="item.status"  id="status"></td>
+      <td>{{!item.isEditing?item.numeroCuenta:''}}<input class="input-edit" type="text"  *ngIf="item.isEditing" [(ngModel)]="item.numeroCuenta"  id="name"></td>
+      <td>{{!item.isEditing?item.tipoCuenta:''}} <input class="input-edit" type="text" *ngIf="item.isEditing"  [(ngModel)]="item.tipoCuenta"  id="address"></td>
+      <td>{{!item.isEditing?item.saldoInicial:''}} <input class="input-edit" type="text" *ngIf="item.isEditing" disabled [(ngModel)]="item.saldoInicial"  id="phoneNumber"></td>
+      <td><input class="input-edit" disabled type="checkbox"  *ngIf="!item.isEditing" [(ngModel)]="item.estado" disabled ><input class="input-edit" type="checkbox" *ngIf="item.isEditing" [(ngModel)]="item.estado"  id="status"></td>
+      <td>{{!item.isEditing?item.movimiento:''}}<input class="input-edit" type="text" *ngIf="item.isEditing" (ngModelChange)="validateValues()" [(ngModel)]="item.movimiento"  id="password"></td>
+      <td>{{!item.isEditing?item.saldoDisponible:''}}<input class="input-edit" type="text" disabled *ngIf="item.isEditing" [(ngModel)]="item.saldoDisponible"  id="password"></td>
       <td class="option-label">
         <button class="btn btn-left btn-success" type="button" *ngIf="!item.isEditing" (click)="editItem(item)" ><i class="fa fa-pencil" aria-hidden="true"></i></button>
         <button class="btn btn-left btn-danger" type="button" *ngIf="item.isEditing" (click)="cancelEdit(item)" ><i class="fa fa-times-circle" aria-hidden="true"></i></button>
@@ -38,11 +40,18 @@
     </tr>
     <tr *ngIf="creation">
       <!--Creation-->
-      <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.name"  id="createName"></td>
-      <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.address"  id="createAddress"></td>
-      <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.phoneNumber"  id="createPhoneNumber"></td>
-      <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.password"  id="createPassword"></td>
-      <td ><input class="input-edit" type="checkbox"  [(ngModel)]="objectJson.status"  id="createStatus"></td>
+      <td >
+        <select class="input-edit" [(ngModel)]="objectJson.numeroCuenta" (change)="getValuesOfAccount()"  name="select">
+          <option *ngFor="let item of accountsList" value="{{item.numeroCuenta}}" >{{item.numeroCuenta}} - {{item.clientName}}</option>
+        </select>
+      
+      </td>
+      <td ><input class="input-edit" type="text" disabled  [(ngModel)]="objectJson.tipoCuenta"  id="createAddress"></td>
+      <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.saldoInicial"  id="createPhoneNumber"></td>
+      <td ><input class="input-edit" type="checkbox" disabled  [(ngModel)]="objectJson.estado"  id="createStatus"></td>
+      <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.movimiento" (ngModelChange)="validateValues()"  id="createPassword"></td>
+      <td ><input class="input-edit" type="text"  [(ngModel)]="objectJson.saldoDisponible"  id="createPassword"></td>
+      
       <td class="option-label">
         <!--              <button class="btn btn-left btn-success" type="button" *ngIf="!edition" (click)="editItem(item)" ><i class="fa fa-pencil" aria-hidden="true"></i></button>-->
         <!--              <button class="btn btn-left btn-danger" type="button" *ngIf="edition" (click)="cancelEdit(item)" ><i class="fa fa-" aria-hidden="true"></i></button>-->
